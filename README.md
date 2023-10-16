@@ -8,7 +8,10 @@
 ```bash
 $ pip install -r requirements.txt
 ```
-
+## Activate ENV
+```bash
+$ (LINUX) source env/bin/activate
+```
 ## Usage
 ```bash
 $ python3 main.py 
