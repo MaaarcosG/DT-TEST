@@ -4,6 +4,11 @@
 ## Requeriments
 - Python 3.10.6+
 
+## Installation
+```bash
+$ pip install -r requirements.txt
+```
+
 ## Usage
 ```bash
 $ pip install -r requirements.txt 

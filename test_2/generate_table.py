@@ -1,21 +1,22 @@
 import pandas as pd
-import sqlite3
 
 def table():
     archivo_excel = pd.ExcelFile('test_1/data/WEB01012023.xlsx')
-    hoja = 'LDM'
+    page = 'LDM'
+    hoja = archivo_excel.parse(page, header=None) 
+    # Buscar la fila que contiene "DEMANDA MÍNIMA"
+    fila_demanda_minima = hoja[hoja.apply(lambda row: 'DEMANDA MEDIA' in row.values, axis=1)]
 
-    df = archivo_excel.parse(hoja, header=None)
+    if not fila_demanda_minima.empty:
+        # Obtener el índice de la fila "DEMANDA MÍNIMA"
+        indice_fila = fila_demanda_minima.index[0]
 
-    filas_a_eliminar = []
-    for index, row in df.iterrows():
-        if "DEMANDA MEDIA" in row.values:
-            filas_a_eliminar.append(index)
-            filas_a_eliminar.append(index + 1)
+        # Leer los datos a partir de la fila siguiente
+        demanda_minima = hoja.iloc[indice_fila + 1:]
 
-    df = df.drop(filas_a_eliminar)
-
-    df.columns = df.iloc[3]
-    df = df[3:]
-    df_jen_c = df[df['Nemo'] == 'JEN-C']
-    print(df_jen_c)
+        # Reiniciar los índices
+        demanda_minima.reset_index(drop=True, inplace=True)
+        print(demanda_minima[demanda_minima[0] == 'JEN-C'])
+        print(demanda_minima.columns)
+    else:
+        print("No se encontró la tabla 'DEMANDA MÍNIMA' en la hoja.")
